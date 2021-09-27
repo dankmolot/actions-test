@@ -23,11 +23,15 @@ jobs:
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-      - uses: actions/checkout@v2
+      - name: "Checkout bzip2"
+        uses: actions/checkout@v2
         with:
           repository: 'dankmolot/bzip2'
           ref: 'bzip2-1.0.8'
           path: 'bzip2'
 
-      - name: 'test'
-        run: ls bzip2
+      - name: 'Compile bzip2'
+        run: |
+          cd bzip2
+          make libbz2.a
+          ls
