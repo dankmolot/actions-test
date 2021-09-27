@@ -47,5 +47,5 @@ jobs:
         run: |
           cd boost
           ./bootstrap.sh
-          LD_LIBRARY_PATH=${{ GITHUB_WORKSPACE }} ./b2 variant=release link=static cflags=-fPIC cxxflags=-fPIC --with-iostreams
+          LD_LIBRARY_PATH=${{ github.workspace }} ./b2 variant=release link=static cflags=-fPIC cxxflags=-fPIC --with-iostreams
           
