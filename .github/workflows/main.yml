@@ -23,13 +23,11 @@ jobs:
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-      - name: "Checkout boost 1.77.0"
-        uses: actions/checkout@v2
-        with:
-          repository: 'boostorg/boost'
-          ref: 'boost-1.77.0'
-          path: 'boost'
-          submodules: 'recursive'
+      - name: "Download boost 1.77.0"
+        run: |
+          wget -O boost.tar.bz2 https://sourceforge.net/projects/boost/files/boost/1.77.0/boost_1_77_0.tar.bz2 
+          tar -xf boost.tar.bz2 --checkpoint=.100
+          rm boost.tar.bz2
       
       - name: "Checkout bzip2 1.0.8"
         uses: actions/checkout@v2
@@ -45,7 +43,7 @@ jobs:
       
       - name: 'Compile boost'
         run: |
-          cd boost
+          cd boost_1_77_0
           ./bootstrap.sh
           LD_LIBRARY_PATH=${{ github.workspace }} ./b2 variant=release link=static cflags=-fPIC cxxflags=-fPIC --with-iostreams
           
