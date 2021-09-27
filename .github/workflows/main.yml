@@ -23,7 +23,15 @@ jobs:
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-      - name: "Checkout bzip2"
+      - name: "Checkout boost 1.77.0"
+        uses: actions/checkout@v2
+        with:
+          repository: 'boostorg/boost'
+          ref: 'boost-1.77.0'
+          path: 'boost'
+          submodule: 'recursive'
+      
+      - name: "Checkout bzip2 1.0.8"
         uses: actions/checkout@v2
         with:
           repository: 'dankmolot/bzip2'
@@ -34,4 +42,10 @@ jobs:
         run: |
           cd bzip2
           make libbz2.a
-          ls
+      
+      - name: 'Compile boost'
+        run: |
+          cd boost
+          ./bootstrap.sh
+          LD_LIBRARY_PATH=${{ GITHUB_WORKSPACE }} ./b2 variant=release link=static cflags=-fPIC cxxflags=-fPIC --with-iostreams
+          
